@@ -1,0 +1,34 @@
+#ce code permet de determiner les numéros et les noms des bus 400,225 et 150KV dans le réseau marocain.
+#Chargement de la base de donnés statique.
+psspy.case(r"""X:\2024_07_04__Peak_90percent_6300MW.sav""")
+
+# création d'un subsystem qui ne contient que le Maroc .
+sid=0                    #l'identifiant du sous système
+usekv = 1                #ça veut dire on va utiliser la tension des bus comme critere de selecction
+basekv = [150.0, 400.0]  # min tension= 150.0 kv et max tension=400.0
+numarea=1                # nombre des areas à inclure
+areas=[71]               #liste des areas à inclure
+
+psspy.bsys(sid,usekv ,basekv , numarea, areas)
+
+# récupération des numéros des bus  dans le réseau marocain.
+ierr, bus_numbers = psspy.abusint(0, 2, 'NUMBER')
+
+#récupération des noms des bus  dans le réseau marocain.
+ierr, bus_names = psspy.abuschar(0, 2, 'NAME')
+
+#le nombre des bus dans le réseau marocain.
+l=len(bus_numbers[0])
+
+# Liste pour stocker les numéros  des bus de 150,225 et 400 kV  au Maroc.
+buses_150_225_400kV = []
+
+# Liste pour stocker les noms des bus de 150,225 et 400 kV  au Maroc.
+noms_buses=[]
+
+for i in range(0,l):
+    buses_150_225_400kV.append(bus_numbers[0][i])
+    noms_buses.append(bus_names[0][i])
+
+print(buses_150_225_400kV)
+print(noms_buses)
